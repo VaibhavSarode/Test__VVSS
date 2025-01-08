@@ -4,12 +4,12 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Docker Hub...
-      - echo dckr_pat_A7wH5MXdJNohWJCrV_ZPaJhaVKM | docker login --username vaibbhav111 --password-stdin
+      - echo PQAT | docker login --username us --password-stdin
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 381492092878.dkr.ecr.us-east-1.amazonaws.com 
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 3814ACC8.dkr.ecr.us-east-1.amazonaws.com 
       - echo Pulling Nginx image from Docker Hub...
       - docker pull nginx:latest
-      - REPOSITORY_URI=381492092878.dkr.ecr.us-east-1.amazonaws.com/genlite-test
+      - REPOSITORY_URI=3814920878.dkr.ecr.us-east-1.amazonaws.com/genli..
       - IMAGE_TAG=latest
       
   build:
