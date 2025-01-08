@@ -1,1 +1,31 @@
-update
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Docker Hub...
+      - echo dckr_pat_A7wH5MXdJNohWJCrV_ZPaJhaVKM | docker login --username vaibbhav111 --password-stdin
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 381492092878.dkr.ecr.us-east-1.amazonaws.com
+      - echo Pulling Nginx image from Docker Hub...
+      - docker pull nginx:latest
+      - REPOSITORY_URI=381492092878.dkr.ecr.us-east-1.amazonaws.com/genlite-test
+      - IMAGE_TAG=latest
+      
+  build:
+    commands:
+      - echo Tagging Nginx image for ECR...
+      - docker tag nginx:latest $REPOSITORY_URI/nginx:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Pushing Nginx image to Amazon ECR...
+      - docker push $REPOSITORY_URI/nginx:$IMAGE_TAG
+      - printf '[{"name":"nginx-container","imageUri":"%s"}]' $REPOSITORY_URI/nginx:$IMAGE_TAG > imagedefinitions.json
+
+
+artifacts:
+  files: 
+    - '**/*'
+    -  imagedefinitions.json
+  discard-paths: yes
